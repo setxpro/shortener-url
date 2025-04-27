@@ -1,4 +1,4 @@
-package br.com.bytestorm.shortener.domain.gateways;
+package br.com.bytestorm.shortener.infra.gateways;
 
 import br.com.bytestorm.shortener.application.gateways.ShortenerGateway;
 import br.com.bytestorm.shortener.delivery.dto.MessageDTO;
@@ -40,8 +40,13 @@ public class ShortenerRepositoryGateway implements ShortenerGateway {
     @Override
     public String redirectToOriginalUrl(String shortener) {
         Optional<ShortenerEntity> shortenerOpt = shortenerRepository.findByShortUrl(shortener);
-        return shortenerOpt.map(ShortenerEntity::getOriginalUrl).orElseThrow(
-                () -> new NotFoundException("https://i.pinimg.com/originals/9b/e2/0e/9be20e6d12d76270ebb6559f0764cce4.gif")
+
+        return shortenerOpt.map(ShortenerEntity::getOriginalUrl).orElse(
+            notfound()
         );
+    }
+
+    private String notfound() {
+        return "https://i.pinimg.com/originals/9b/e2/0e/9be20e6d12d76270ebb6559f0764cce4.gif";
     }
 }
